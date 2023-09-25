@@ -42,7 +42,7 @@ public class CoffeeShop {
 	public void printProduct(Product product) {
 		// TODO HOMEWORK : Change this print only the product name + tab + price with a
 		// $
-		System.out.println("Product name : " + product.getName() + " Price : " + product.getPrice());
+		System.out.println("Product name : " +"\t"+ product.getName() + " Price : "+"$" + product.getPrice());
 	}
 
 	public void printAllProducts() {
@@ -112,8 +112,10 @@ public class CoffeeShop {
 		for (Product product : order) {
 			//if (product.getName().equalsIgnoreCase(orderSelection)) {
 				//order.add(product);
-				System.out.println(product.getName());
-			//}
+				System.out.println(""+product.getName()+"\t"+product.getPrice());
+				
+				
+			
 		}
 		System.out.println("======================= ");
 	}

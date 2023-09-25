@@ -1,4 +1,4 @@
-package PA303dot4;
+package PA303;
 
 public class firstprogram {
 	

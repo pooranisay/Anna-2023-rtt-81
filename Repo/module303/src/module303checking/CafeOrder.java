@@ -3,6 +3,9 @@ import java.text.DecimalFormat;
 import java.util.*;
 
 public class CafeOrder {
+	
+	//Eric code
+	Scanner input=new Scanner(System.in);
 	List <Product> products=new ArrayList<>();
 	public void setupProducts()
 	{
@@ -20,12 +23,30 @@ public class CafeOrder {
 	
 	Product cookie=new Product();
 	cookie.setName("Cookie");
-	cookie.setPrice(5.44);
+	cookie.setPrice(3.44);
 	products.add(cookie);
 	
-	printAllProducts();
-	}
+	Product muffins=new Product();
+	muffins.setName("Muffins");
+	muffins.setPrice(7.44);
+	products.add(muffins);
 	
+	//printAllProducts();
+	
+	
+	}
+
+	
+public int userSelect()
+{ System.out.println("1)\t Print the menu items and prices");
+System.out.println("2)\t Add an items to your orders");
+System.out.println("3)\t Print the menu items and prices in your order");
+System.out.println("4)\t PCheckout");
+System.out.println("\n\t What do you want to do now?");
+int select=input.nextInt();
+
+return select;
+}
 public void printproduct(Product product)
 {
 	System.out.println("Product name:\t"+product.getName() +"\t"+"Product Price\t $"+product.getPrice());
@@ -44,8 +65,14 @@ public void printAllProducts()
 		CafeOrder cf=new CafeOrder();
 		cf.setupProducts();
 		
-		
-		
+		int userSelection=cf.userSelect();
+		if(userSelection==1)
+		{
+			cf.printAllProducts();
+		}
+		else {
+			System.out.println("User input"+userSelection+"is unknown Try again");
+		}
      // product names and their respective prices
         String product1 = "Coffee";
         double price1 = 2.50;
