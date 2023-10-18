@@ -111,21 +111,26 @@ public class ArrayDeclaration {
      
      String letters = "a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z";
      String[] lettersArray=letters.split(",");
-     
+     int ExceptVowelsCount=0;
+    
      for(String lettersnew:lettersArray)
      {
     	 
     	 System.out.println("After Split   "+lettersnew);
+    	
+    	 
      }
 
-     int VowelsCount=0;
+     
      for(int i=0;i<letters.length();i++)
      {
-     char ch=letters.charAt(i);
-     if((ch=='a')||(ch=='e')||(ch=='i')||(ch=='o')||(ch=='u'))
+    	
+     char ch=letters.toLowerCase().charAt(i);
+     if((ch!='a')&&(ch!='e')&&(ch!='i')&&(ch!='o')&&(ch!='u')&&(ch!=','))
      {
-        VowelsCount++;
-        System.out.println("Vowels\t"+ ch+"\tCount"+VowelsCount);
+    	 
+    	 ExceptVowelsCount++;
+        System.out.println("Except Vowels\t"+ ch+"\tCount"+ExceptVowelsCount);
      }
    }
   

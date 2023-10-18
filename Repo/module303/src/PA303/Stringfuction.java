@@ -124,6 +124,7 @@ public class Stringfuction {
 		System.out.println("Hello".replace('l', 'i'));
 		
 		
+		
 		//14. Java String replaceAll()
 
 		String s8 = "Java123is456fun";
@@ -132,9 +133,15 @@ public class Stringfuction {
 		/* replace all occurrences of numeric
 		digits by a space*/
 		System.out.println(s8.replaceAll(regex, " "));
+		String splitex= "a,b,c,d,e";
+		
+		String splitarray[]=splitex.split(",");
 
+		System.out.println(""+Arrays.toString(splitarray));
 		
-		
+		String name="Perscholars java program";
+		String[] results=name.split(" ");
+		System.out.println(""+Arrays.toString(results));
 		
 		
 		
