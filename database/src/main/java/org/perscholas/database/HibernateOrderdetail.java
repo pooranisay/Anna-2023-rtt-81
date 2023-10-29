@@ -10,9 +10,9 @@ public class HibernateOrderdetail {
 		
 OrderdetailDAO orderdao = new OrderdetailDAO();
 		
-		Orderdetail order = orderdao.findById(103);
+		//Orderdetail order = orderdao.findById(103);
 		
-		System.out.println( order.getOrderid() + " | " + order.getProductid() );
+		//System.out.println( order.getId() + " | " + order.getProductid() );
 
 	}
 

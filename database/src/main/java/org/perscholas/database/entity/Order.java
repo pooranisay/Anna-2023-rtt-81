@@ -1,12 +1,18 @@
 package org.perscholas.database.entity;
 
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -23,15 +29,49 @@ import org.hibernate.annotations.Type;
 		private Integer id;
 	    
 	    
-	    @Column(name = "customer_id")
-		private Integer customerid;
+	    @Column(name = "customer_id", insertable = false, updatable = false)
+	   
+	   private Integer customerid;
 	    
-	    @Column(name = "order_date")
+	    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+	    @JoinColumn(name = "customer_id", nullable = false)
+	    private Customer customer;
+	    
+	    @OneToMany(mappedBy = "order", 
+	    		fetch = FetchType.LAZY, 
+	    		cascade = CascadeType.ALL)
+	    private List<Orderdetail> orderdetails;
+	    
+	    public List<Orderdetail> getOrderdetails() {
+			return orderdetails;
+		}
+
+		public void setOrderdetails(List<Orderdetail> orderdetails) {
+			this.orderdetails = orderdetails;
+		}
+
+		@Column(name = "order_date")
 	    @Temporal(TemporalType.DATE)
 	    private Date orderDate;
 		
 	    
-	    @Column(name = "required_date")
+	   public Integer getCustomerid() {
+			return customerid;
+		}
+
+		public void setCustomerid(Integer customerid) {
+			this.customerid = customerid;
+		}
+
+		public Customer getCustomer() {
+			return customer;
+		}
+
+		public void setCustomer(Customer customer) {
+			this.customer = customer;
+		}
+
+		@Column(name = "required_date")
 	    @Temporal(TemporalType.DATE)
 	    private Date requiredDate;
 	    
@@ -60,13 +100,7 @@ import org.hibernate.annotations.Type;
 			this.id = id;
 		}
 
-		public Integer getCustomerid() {
-			return customerid;
-		}
-
-		public void setCustomerid(Integer customerid) {
-			this.customerid = customerid;
-		}
+		
 
 		public Date getOrderDate() {
 			return orderDate;
