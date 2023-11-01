@@ -23,3 +23,8 @@
 hs_err_pid*
 replay_pid*
 database/target/
+Repo/
+junit_examples/target/
+junit_examples/.settings/org.eclipse.jdt.apt.core.prefs
+junit_examples/.settings/org.eclipse.jdt.core.prefs
+junit_examples/.settings/org.eclipse.m2e.core.prefs
