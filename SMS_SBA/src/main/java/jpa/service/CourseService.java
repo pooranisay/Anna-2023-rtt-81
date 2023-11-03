@@ -58,26 +58,24 @@ import jpa.entitymodels.Course;
         }
     }
 }*/
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.query.Query;
+
 public class CourseService implements CourseDAO {
 
     private SessionFactory sessionFactory;
     private CourseDAO courseDAO;
 
     public CourseService() {
-        this.sessionFactory = new Configuration().configure().buildSessionFactory();
-        // Initialize other members to their initial values if needed
+        // Default constructor with no dependencies. Not recommended for production.
+        // Consider using dependency injection for a production-ready application.
     }
+
     public CourseService(SessionFactory sessionFactory, CourseDAO courseDAO) {
         this.sessionFactory = sessionFactory;
         this.courseDAO = courseDAO;
-    }
-
-    public SessionFactory getSessionFactory() {
-        return sessionFactory;
-    }
-
-    public CourseDAO getCourseDAO() {
-        return courseDAO;
     }
 
     public List<Course> getAllCourses() {
@@ -85,7 +83,8 @@ public class CourseService implements CourseDAO {
             Transaction transaction = session.beginTransaction();
 
             try {
-                List<Course> courses = session.createQuery("FROM Course", Course.class).list();
+                Query<Course> query = session.createQuery("FROM Course", Course.class);
+                List<Course> courses = query.list();
                 transaction.commit();
                 return courses;
             } catch (Exception e) {
@@ -97,12 +96,15 @@ public class CourseService implements CourseDAO {
     }
 
     public Course getCourseById(Integer cId) {
-    	 try (Session session = sessionFactory.openSession()) {
-    	        return session.get(Course.class, cId);
-    	    } catch (Exception e) {
-    	        // Log or handle the exception as needed.
-    	        throw e;
-    	    } 
+        try (Session session = sessionFactory.openSession()) {
+            String hql = "FROM Course C WHERE C.cId = :courseId";
+            Query<Course> query = session.createQuery(hql, Course.class);
+            query.setParameter("courseId", cId);
+            return query.uniqueResult();
+        } catch (Exception e) {
+            // Log or handle the exception as needed.
+            throw e;
+        }
     }
 
     public void close() {
@@ -111,5 +113,3 @@ public class CourseService implements CourseDAO {
         }
     }
 }
-
-

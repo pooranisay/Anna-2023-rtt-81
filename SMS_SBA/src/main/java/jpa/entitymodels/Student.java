@@ -31,14 +31,10 @@ public class Student {
 
 	@Column(name = "password")
 	private String sPass;
-	
+
 	@ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-        name = "student_course",
-        joinColumns = @JoinColumn(name = "email_id"),
-        inverseJoinColumns = @JoinColumn(name = "course_id")
-    )
-    private List<Course> sCourses;
+	@JoinTable(name = "student_course", joinColumns = @JoinColumn(name = "email_id"), inverseJoinColumns = @JoinColumn(name = "course_id"))
+	private List<Course> sCourses;
 
 	// @ManyToMany(mappedBy = "student",fetch = FetchType.EAGER,
 	// cascade = CascadeType.ALL)

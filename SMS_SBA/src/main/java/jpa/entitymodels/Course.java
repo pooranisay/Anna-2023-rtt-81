@@ -18,11 +18,10 @@ import javax.persistence.Table;
 @Table(name = "course")
 public class Course {
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
 	private Integer cId;
 
-	
 	public Integer getcId() {
 		return cId;
 	}
@@ -37,7 +36,6 @@ public class Course {
 	@Column(name = "instructor")
 	private String cInstructorName;
 
-	
 	public String getcName() {
 		return cName;
 	}
@@ -53,9 +51,9 @@ public class Course {
 	public void setcInstructorName(String cInstructorName) {
 		this.cInstructorName = cInstructorName;
 	}
-	
+
 	public String toString() {
-        return String.format("%5d%15s%15s", cId, cName, cInstructorName);
-    }
+		return String.format("%5d%15s%15s", cId, cName, cInstructorName);
+	}
 
 }

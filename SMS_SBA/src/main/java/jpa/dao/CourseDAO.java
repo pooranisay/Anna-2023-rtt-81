@@ -6,6 +6,7 @@ import jpa.entitymodels.Course;
 import jpa.entitymodels.Student;
 
 public interface CourseDAO {
-    List<Course> getAllCourses();
-    Course getCourseById(Integer cId);
+	List<Course> getAllCourses();
+
+	Course getCourseById(Integer cId);
 }
