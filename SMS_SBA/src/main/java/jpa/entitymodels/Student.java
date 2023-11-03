@@ -1,7 +1,7 @@
 package jpa.entitymodels;
 
 import java.util.List;
-
+import javax.persistence.*;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,65 +9,83 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-	@Table(name = "student")
-	public class Student {
-	    @Id
-	    @GeneratedValue(strategy = GenerationType.IDENTITY)
-	    @Column(name = "email", unique = true)
-	    private String sEmail;
+@Table(name = "student")
+public class Student {
 
-	    @Column(name = "name")
-	    private String sName;
+	@Column(name = "id")
+	private Integer sid;
 
-	    @Column(name = "password")
-	    private String sPass;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "email", unique = true)
+	private String sEmail;
 
-	    @ManyToMany(mappedBy = "student",fetch = FetchType.EAGER, 
-	    		cascade = CascadeType.ALL)
-	    private List<Course> sCourses;
-	    
-	    public Student() {
-	        // Default constructor
-	    }
+	@Column(name = "name")
+	private String sName;
 
-		public String getsEmail() {
-			return sEmail;
-		}
+	@Column(name = "password")
+	private String sPass;
+	
+	@ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "student_course",
+        joinColumns = @JoinColumn(name = "email_id"),
+        inverseJoinColumns = @JoinColumn(name = "course_id")
+    )
+    private List<Course> sCourses;
 
-		public void setsEmail(String sEmail) {
-			this.sEmail = sEmail;
-		}
+	// @ManyToMany(mappedBy = "student",fetch = FetchType.EAGER,
+	// cascade = CascadeType.ALL)
+	// private List<Course> sCourses;
 
-		public String getsName() {
-			return sName;
-		}
+	public Student() {
+		// Default constructor
+	}
 
-		public void setsName(String sName) {
-			this.sName = sName;
-		}
+	public Integer getSid() {
+		return sid;
+	}
 
-		public String getsPass() {
-			return sPass;
-		}
+	public void setSid(Integer sid) {
+		this.sid = sid;
+	}
 
-		public void setsPass(String sPass) {
-			this.sPass = sPass;
-		}
+	public String getsEmail() {
+		return sEmail;
+	}
 
-		public List<Course> getsCourses() {
-			return sCourses;
-		}
+	public void setsEmail(String sEmail) {
+		this.sEmail = sEmail;
+	}
 
-		public void setsCourses(List<Course> sCourses) {
-			this.sCourses = sCourses;
-		}
-	    
-	    
+	public String getsName() {
+		return sName;
+	}
+
+	public void setsName(String sName) {
+		this.sName = sName;
+	}
+
+	public String getsPass() {
+		return sPass;
+	}
+
+	public void setsPass(String sPass) {
+		this.sPass = sPass;
+	}
+
+	public List<Course> getsCourses() {
+		return sCourses;
+	}
+
+	public void setsCourses(List<Course> sCourses) {
+		this.sCourses = sCourses;
+	}
 
 }
-
-

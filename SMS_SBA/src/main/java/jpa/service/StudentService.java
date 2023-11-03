@@ -6,6 +6,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 import jpa.dao.CourseDAO;
@@ -13,76 +14,100 @@ import jpa.dao.StudentDAO;
 import jpa.entitymodels.Course;
 import jpa.entitymodels.Student;
 
-public class StudentService {
+public class StudentService implements StudentDAO {
+    private SessionFactory sessionFactory;
+    private CourseDAO courseDAO;
 
-	private StudentDAO studentDAO;
-	private CourseDAO courseDAO;
+   
+    public StudentService() {
+        this.sessionFactory = new Configuration().configure().buildSessionFactory();
+    }
 
-	public StudentService(StudentDAO studentDAO, CourseDAO courseDAO) {
-		this.studentDAO = studentDAO;
-		this.courseDAO = courseDAO;
-	}
+    // Second constructor to initialize every private member with provided parameters
+    public StudentService(SessionFactory sessionFactory, CourseDAO courseDAO) {
+        if (sessionFactory == null) {
+            throw new IllegalArgumentException("sessionFactory cannot be null");
+        }
 
-	public List<Student> getAllStudents() {
-		return studentDAO.getAllStudents();
-	}
+        if (courseDAO == null) {
+            throw new IllegalArgumentException("courseDAO cannot be null");
+        }
+
+        this.sessionFactory = sessionFactory; // Use the provided sessionFactory
+        this.courseDAO = courseDAO;
+    }
+
+    
+
+    public List<Student> getAllStudents() {
+        try (Session session = sessionFactory.openSession()) {
+            String hql = "FROM Student";
+            return session.createQuery(hql, Student.class).list();
+        }
+    }
 
 	public Student getStudentByEmail(String sEmail) {
-		return studentDAO.getStudentByEmail(sEmail);
+		try (Session session = sessionFactory.openSession()) {
+            String hql = "FROM Student s WHERE s.sEmail = :email";
+            Query<Student> query = session.createQuery(hql, Student.class);
+            query.setParameter("email", sEmail);
+            return query.uniqueResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+		//return studentDAO.getStudentByEmail(sEmail);
 	}
 
 	public boolean validateStudent(String sEmail, String sPassword) {
-		SessionFactory factory = new Configuration().configure().buildSessionFactory();
-		Session session = factory.openSession();
-		String hql = "SELECT COUNT(*) FROM Student WHERE sEmail = :email AND sPass = :password";
-		TypedQuery<Student> query = session.createQuery(hql, Student.class);
-		query.setParameter("email", sEmail);
-		query.setParameter("password", sPassword);
-
-		Student result = query.getSingleResult();
-		session.close();
-		factory.close();
-
-		return result != null;
-	}
-
+		
+	        Student student = getStudentByEmail(sEmail);
+	        return student != null && student.getsPass().equals(sPassword);
+	    }
+	
+	
 	public void registerStudentToCourse(String sEmail, int cId) {
-		SessionFactory factory = new Configuration().configure().buildSessionFactory();
-		Session session = factory.openSession();
-		String hql = " SELECT FROM Student WHERE sEmail = :email";
-		TypedQuery<Student> query = session.createQuery(hql, Student.class);
-		query.setParameter("email", sEmail);
+		try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
 
-		Student student = query.getSingleResult();
+            Student student = getStudentByEmail(sEmail);
+            Course course = courseDAO.getCourseById(cId);
 
-		if (student != null) {
-			Course course = session.load(Course.class, cId);
+            if (student != null && course != null) {
+                String hql = "SELECT COUNT(*) FROM Student s JOIN s.sCourses c WHERE s.sEmail = :email AND c.cId = :courseId";
+                Long count = session.createQuery(hql, Long.class)
+                        .setParameter("email", sEmail)
+                        .setParameter("courseId", cId)
+                        .getSingleResult();
 
-			if (course != null) {
-				List<Course> studentCourses = student.getsCourses();
+                if (count == 0) {
+                    student.getsCourses().add(course);
+                    session.update(student);
+                }
+            
+	        }
 
-				if (!studentCourses.contains(course)) {
-					studentCourses.add(course);
-					session.update(student);
-				}
-			}
-		}
+	        session.getTransaction().commit();
+	    }
 	}
 
 	public List<Course> getStudentCourses(String sEmail) {
-					SessionFactory factory = new Configuration().configure().buildSessionFactory();
-			Session session = factory.openSession();
-			String hql = "SELECT c FROM Student s JOIN s.sCourses c WHERE s.sEmail = :email";
-			TypedQuery<Course> query = session.createQuery(hql, Course.class);
-			query.setParameter("email", sEmail);
-
-			return query.getResultList();
-	
-		
-		
-		
-		
-		
+		try (Session session = sessionFactory.openSession()) {
+            String hql = "SELECT c FROM Student s JOIN s.sCourses c WHERE s.sEmail = :email";
+            Query<Course> query = session.createQuery(hql, Course.class);
+            query.setParameter("email", sEmail);
+            return query.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
 	}
-
+	public void updateStudent(Student student) {
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            session.update(student);
+            session.getTransaction().commit();
+        }
+	}	
+	
 }

@@ -1,5 +1,7 @@
 package jpa.entitymodels;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,24 +14,16 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-
-
 @Entity
 @Table(name = "course")
 public class Course {
-	
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-	private Integer cId ;
-	
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(
-		name = "student", // Name of the join table
-		joinColumns = @JoinColumn(name = "name")// Column in the join table that links to the Student entity
-	)private Student student;
+	private Integer cId;
 
-    public Integer getcId() {
+	
+	public Integer getcId() {
 		return cId;
 	}
 
@@ -37,14 +31,13 @@ public class Course {
 		this.cId = cId;
 	}
 
-	public Student getStudent() {
-		return student;
-	}
+	@Column(name = "name")
+	private String cName;
 
-	public void setStudent(Student student) {
-		this.student = student;
-	}
+	@Column(name = "instructor")
+	private String cInstructorName;
 
+	
 	public String getcName() {
 		return cName;
 	}
@@ -60,15 +53,9 @@ public class Course {
 	public void setcInstructorName(String cInstructorName) {
 		this.cInstructorName = cInstructorName;
 	}
-
-	@Column(name = "name")
-    private String cName;
-
-    @Column(name = "instructorName")
-    private String cInstructorName;
-
-    public Course() {
-        // Default constructor
+	
+	public String toString() {
+        return String.format("%5d%15s%15s", cId, cName, cInstructorName);
     }
 
 }
