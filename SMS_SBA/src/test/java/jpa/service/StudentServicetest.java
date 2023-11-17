@@ -25,8 +25,8 @@ public class StudentServicetest {
     public void testnotValidStudent() {
        	StudentService validator = new StudentService();
         //check condition if both email and password not valid
-       	String email = "jhsdfhjfdsjhsdfjh";
-        String password = "jhvhjjhfd";
+       	String email = "jhsdfhjfds123jhsdfjh";
+        String password = "jhvhj123jhfd";
         
         boolean actual = validator.validateStudent(email, password);
         

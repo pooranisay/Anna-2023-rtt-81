@@ -69,8 +69,8 @@ public class CourseService implements CourseDAO {
     private CourseDAO courseDAO;
 
     public CourseService() {
-        // Default constructor with no dependencies. Not recommended for production.
-        // Consider using dependency injection for a production-ready application.
+        
+   
     }
 
     public CourseService(SessionFactory sessionFactory, CourseDAO courseDAO) {
