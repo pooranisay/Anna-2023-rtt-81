@@ -1,4 +1,4 @@
-package org.perscholas.Springboot;
+package org.perscholas.springboot;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
