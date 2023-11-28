@@ -1,0 +1,52 @@
+# Library Information Pages
+
+This project is a simple library information website with multiple pages,login and  a registration form.
+
+## Project Structure
+
+1. **home.html** - Main landing page.
+2. **login.html** - Login page for existing users.
+3. **signup.html** - Registration form with a dropdown menu for new users.
+
+## File Structure
+
+- **css/**
+  - **style.css** - External CSS file for general styling.
+  - **forms.css** - External CSS file for form-specific styling.
+
+- **js/**
+  - **form-validation.js** - Internal JavaScript file for form validation on the signup page. Implementing validation using the `<script>` tag in the HTML file.
+
+
+# HTML Pages
+
+### 1. Home Page (home.html)
+
+The main landing page of the library information website.
+
+### 2. Login Page (login.html)
+
+A page where existing users can log in to access their accounts.
+
+### 3. Registration Form (signup.html)
+
+A registration form where new users can sign up for library services. It includes:
+
+- Username
+- Email
+- Password
+- Confirm Password
+- User Type (Student or Administrator)
+
+Form validation is implemented using JavaScript.
+
+## CSS Styling
+
+- **style.css:** Common styling for all pages.
+- **forms.css:** Specific styling for forms, including the registration form.
+
+## JavaScript Functionalities
+
+- **main.js:** Common JavaScript functionalities for all pages.
+- **form-validation.js:** JavaScript for form validation on the registration page.
+

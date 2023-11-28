@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Form</title>
+    <link rel="stylesheet" href="style/style.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Login Form</h2>
+        <form id="form">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username">
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password">
+
+            <button type="submit">Login</button>
+        </form>
+        <p>Don't have an account? <a href="signup.html">Sign up</a></p>
+    </div>
+
+    <script>
+        const form = document.querySelector("#form");
+        const username = document.querySelector("#username");
+        const password = document.querySelector("#password");
+
+        form.addEventListener("submit", (e) => {
+            e.preventDefault();
+            validateInputs();
+        });
+
+        const setError = (element, message) => {
+            const inputControl = element.parentElement;
+            const errorDisplay = inputControl.querySelector(".error");
+
+            errorDisplay.innerText = message;
+            inputControl.classList.add("error");
+            inputControl.classList.remove("success");
+
+            return false;
+        };
+
+        const setSuccess = (element) => {
+            const inputControl = element.parentElement;
+            const errorDisplay = inputControl.querySelector(".error");
+
+            errorDisplay.innerText = "";
+            inputControl.classList.add("success");
+            inputControl.classList.remove("error");
+
+            return true;
+        };
+
+        const validateInputs = () => {
+            const usernameValue = username.value.trim();
+            const passwordValue = password.value.trim();
+
+            let isUsernameValid = usernameValue !== "" && setSuccess(username);
+            let isPasswordValid = passwordValue !== "" && setSuccess(password);
+
+            if (usernameValue === "") {
+                isUsernameValid = setError(username, "Username is required");
+            }
+
+            if (passwordValue === "") {
+                isPasswordValid = setError(password, "Password is required");
+            }
+
+            // Check if all inputs are valid
+            if (isUsernameValid && isPasswordValid) {
+                // Form submission logic can be added here
+                alert("Form submitted successfully!");
+            }
+        };
+    </script>
+</body>
+</html>
