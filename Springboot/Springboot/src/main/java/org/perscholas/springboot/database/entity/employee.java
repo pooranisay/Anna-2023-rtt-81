@@ -7,23 +7,21 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="customers")
-public class customer {
+@Table(name="employee")
+public class employee {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "firstname")
+    @Column(name = "first_name")
     private String firstName;
 
-    @Column(name = "lastname")
+    @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "phone")
-    private String phone;
+    @Column(name = "department_name")
+    private String departmentName;
 
-    @Column(name = "city")
-    private String city;
 }
