@@ -4,40 +4,52 @@
 
 <section>
     <div class="container pt-5">
+
         <h1 class="pb-3">Customer Search</h1>
-<%-- // add a label to the existing form input for first name --%>
-<%-- // add a label to the existing form input for Last name --%>
-        <form action="/customer/search">
-            <label for="firstName">First Name:</label>
-            <input type="text" name="search" placeholder="Search by first name" value="${search}"/>
 
-            <label for="lastName">Last Name:</label>
-            <input type="text" name="searchLastName" placeholder="Search by last name" value="${searchLastName}"/>
-<button type="submit" class="btn btn-primary">Search</button>
-</form>
+        <form action="/customer/search" method="GET">
+            <label for="search" ><b>First Name:</b></label>
+            <input type="text"  id="search" name="search" placeholder="Search by first name" value="${search}"/>
+            <label for="searchLastName" ><b>Last Name:</b></label>
+            <input type="text"  id="searchLastName" name="searchLastName" placeholder="Search by last name" value="${searchLastName}"/>
+                <button type="submit" class="btn btn-primary">Search</button>
+
+        </form>
+
         <c:if test="${not empty customerVar}">
-            <h1 class="pt-5">Customers Found ${customerVar.size()}</h1>
+            <section class="bg-light1 pb-5">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-12">
 
-            <table class="table table-hover">
-                <tr>
-                    <td>Id</td>
-                    <td>First Name</td>
-                    <td>Last Name</td>
-                    <td>Phone</td>
-                    <td>City</td>
-                </tr>
-                <c:forEach items="${customerVar}" var="customer">
-                    <tr>
-                        <td>${customer.id}</td>
-                        <td>${customer.firstName}</td>
-                        <td>${customer.lastName}</td>
-                        <td>${customer.phone}</td>
-                        <td>${customer.city}</td>
-                    </tr>
-                </c:forEach>
-            </table>
+                            <h1 class="text-center pt-5">Customers Found ${customerVar.size()}</h1>
 
+                            <table class="table table-hover pt-3">
+                                <tr>
+                                    <td>Id</td>
+                                    <td>First Name</td>
+                                    <td>Last Name</td>
+                                    <td>Phone</td>
+                                    <td>City</td>
+                                    <td>Edit</td>
+                                </tr>
+                                <c:forEach items="${customerVar}" var="customer">
+                                    <tr>
+                                        <td>${customer.id}</td>
+                                        <td>${customer.firstName}</td>
+                                        <td>${customer.lastName}</td>
+                                        <td>${customer.phone}</td>
+                                        <td>${customer.city}</td>
+                                        <td><a href="/customer/edit/${customer.id}">Edit</a></td>
+                                    </tr>
+                                </c:forEach>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </c:if>
+
     </div>
 </section>
 
