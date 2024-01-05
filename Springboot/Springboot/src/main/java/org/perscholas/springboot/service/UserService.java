@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.Locale;
 
 @Slf4j
@@ -22,7 +23,7 @@ public class UserService {
     public User createNewUser(RegisteredUserFormBean form){
         User user=new User();
         user.setEmail(form.getEmail().toLowerCase());
-
+user.setCreatedate(new Date());
         String encoded = passwordEncoder.encode(form.getPassword());
         log.debug("Encoded password: " + encoded);
         user.setPassword(encoded);

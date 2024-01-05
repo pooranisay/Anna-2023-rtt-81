@@ -1,24 +1,13 @@
-@Slf4j
-@Controller
-@ControllerAdvice
-public class ErrorController {
+<jsp:include page="../include/header.jsp"/>
 
-    @RequestMapping(value = "/error/404")
-        public String error404(HttpServletRequest request) {
-            // This is used in the security config for 404 pages
-            log.info("endpoint:/error/404 - Requested URL not found : " + request.getRequestURL());
+<section>
+    <div class="bg-light2 pt-5 pb-5">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1 class="m-0">404 ERROR</h1>
+            </div>
+        </div>
+    </div>
+</section>
 
-            return "error/404";
-        }
-
-        @ExceptionHandler(AccessDeniedException.class)
-        public ModelAndView accessDenied(HttpServletRequest request, Exception ex) {
-            ModelAndView response = new ModelAndView("error/404");
-
-            log.warn("User requested url that they do not have permission to " + request.getRequestURL());
-
-            return response;
-        }
-
-
-}
+<jsp:include page="../include/footer.jsp"/>

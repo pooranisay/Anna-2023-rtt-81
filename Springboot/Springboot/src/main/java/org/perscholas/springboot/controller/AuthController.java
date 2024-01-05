@@ -1,7 +1,9 @@
 package org.perscholas.springboot.controller;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.perscholas.springboot.Security.AuthenticatedUserService;
 import org.perscholas.springboot.database.dao.UserDAO;
 import org.perscholas.springboot.database.entity.User;
 import org.perscholas.springboot.database.entity.customer;
@@ -18,7 +20,8 @@ import org.springframework.web.servlet.ModelAndView;
 @Slf4j
 @Controller
 public class AuthController {
-
+@Autowired
+private AuthenticatedUserService authenticatedUserService;
     @Autowired
     private UserService userService;
 
@@ -38,7 +41,7 @@ public class AuthController {
         return response;
     }
     @GetMapping("/auth/registerSubmit")
-    public ModelAndView registerSubmit(@Valid RegisteredUserFormBean form, BindingResult bindingResult) {
+    public ModelAndView registerSubmit(@Valid RegisteredUserFormBean form, BindingResult bindingResult, HttpSession session) {
 
         if (bindingResult.hasErrors()) {
             log.info("######################### In create user submit - has errors #########################");
@@ -57,6 +60,7 @@ public class AuthController {
 
         User c = userService.createNewUser(form);
 
+        authenticatedUserService.authenticateNewUser(session,c.getEmail(),form.getPassword());
         // the view name can either be a jsp file name or a redirect to another controller method
         ModelAndView response = new ModelAndView();
         response.setViewName("redirect:/");

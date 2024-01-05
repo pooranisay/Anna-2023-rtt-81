@@ -12,7 +12,7 @@
 </section>
 
 <section class="pt-5 pb-5">
-    <div class="container">
+    <div class="container" backdrop-filter: blur(5px);>
         <div class="row justify-content-center">
             <div class="col-6">
                 <!-- the action attribute on the form tag is the URL that the form will submit to when then user clicks the submit button -->
@@ -25,8 +25,11 @@
 
                     <div class="mt-3">
                         <label for="password" class="form-label">Password</label>
-                        <input type="text" class="form-control" id="password" name="password">
+                        <input type="password" class="form-control" id="password" name="password">
                     </div>
+
+
+
 
                     <button type="submit" class="btn btn-primary mt-4">Submit</button>
                 </form>
@@ -35,6 +38,17 @@
         </div>
     </div>
 </section>
+<c:if test="${param['error'] eq ''}">
+    <section class="pt-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-6">
+                    <div class="alert alert-danger w-100 mb-0">Invalid Username or Password</div>
+                </div>
+            </div>
+        </div>
+    </section>
+</c:if>
 <jsp:include page="../include/footer.jsp"/>
 
 

@@ -1,3 +1,4 @@
+<jsp:include page="include/header.jsp"/>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,3 +14,4 @@
 <p>Here is a paragraph - adding more text to this </p>
 </body>
 </html>
+<jsp:include page="include/footer.jsp"/>

@@ -26,4 +26,10 @@ public class customer {
 
     @Column(name = "city")
     private String city;
+
+    @Column(name = "image_url")
+    private String imageurl;
+
+    @Column(name = "user_id")
+    private Integer userId;
 }

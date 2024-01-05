@@ -7,6 +7,9 @@ import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.util.Date;
 
 @Getter
 @Setter
@@ -25,4 +28,6 @@ public class RegisteredUserFormBean {
 
     @NotEmpty( message ="confirmPassword cannnot be empty")
     private String confirmPassword;
+
+
 }

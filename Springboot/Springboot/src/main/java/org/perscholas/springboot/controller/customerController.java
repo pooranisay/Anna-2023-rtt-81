@@ -3,7 +3,10 @@ package org.perscholas.springboot.controller;
 import io.micrometer.common.util.StringUtils;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.perscholas.springboot.Security.AuthenticatedUserService;
 import org.perscholas.springboot.database.dao.customerDAO;
+import org.perscholas.springboot.database.entity.User;
 import org.perscholas.springboot.database.entity.customer;
 import org.perscholas.springboot.formbean.CreateCustomerFormBean;
 import org.perscholas.springboot.service.customerService;
@@ -11,11 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.util.List;
 
 @Slf4j
@@ -32,7 +37,8 @@ public class customerController {
 
     @Autowired
     private customerDAO customerDao;
-
+@Autowired
+private AuthenticatedUserService authenticatedUserService;
     @Autowired
     customerService customerservice;
 
@@ -132,6 +138,7 @@ public class customerController {
                 form.setLastName(customer.getLastName());
                 form.setPhone(customer.getPhone());
                 form.setCity(customer.getCity());
+                form.setImageurl(customer.getImageurl());
             } else {
                 log.warn("Customer with id " + id+ " was not found");
             }
@@ -140,4 +147,75 @@ public class customerController {
         return response;
 
     }
+    @GetMapping("/customer/myCustomers")
+    public void myCustomers() {
+        log.info("######################### In my customers #########################");
+
+        // 1) Use the authenticated user service to find the logged in user
+
+       User user=authenticatedUserService.loadCurrentUser();
+        // 2) Create a DAO method that will find by userId
+        List<customer> customers = customerDao.findByUserId(user.getId());
+        // 3) use the authenticated user id to find a list of all customers created by this user
+        // 4) loop over the customers created and log.debug the customer id and customer last name
+        for (customer customer : customers) {
+            log.debug("customer: id = " + customer.getId() + " last name = " + customer.getLastName());
+        }
+
+    }
+
+    @RequestMapping("/customer/detail")
+    public ModelAndView detail(@RequestParam Integer id) {
+        ModelAndView response = new ModelAndView("customer/detail");
+
+        customer customer = customerDao.findById(id);
+
+        if ( customer == null ) {
+            log.warn("Customer with id " + id + " was not found");
+            // in a real application you might redirect to a 404 here because the custoemr was nto found
+            response.setViewName("redirect:/error/404");
+            return response;
+        }
+
+        response.addObject("customer", customer);
+
+        return response;
+    }
+    @GetMapping("/customer/fileupload")
+    public ModelAndView fileupload(@RequestParam Integer id){
+        ModelAndView response = new ModelAndView("customer/fileupload");
+        customer customer = customerDao.findById(id);
+        response.addObject("customer", customer);
+        log.info("File UPLOAD");
+        return response;
+
+    }
+
+    @PostMapping("/customer/fileUploadSubmit")
+    public ModelAndView fileUploadSubmit(@RequestParam("file") MultipartFile file,
+    @RequestParam Integer id) {
+        ModelAndView response = new ModelAndView("customer/fileupload");
+
+        log.info("Filename = " + file.getOriginalFilename());
+        log.info("Size     = " + file.getSize());
+        log.info("Type     = " + file.getContentType());
+
+
+        // Get the file and save it somewhere
+        File f = new File("./src/main/webapp/pub/image/" + file.getOriginalFilename());
+        try (OutputStream outputStream = new FileOutputStream(f.getAbsolutePath())) {
+            IOUtils.copy(file.getInputStream(), outputStream);
+        } catch (Exception e) {
+
+
+            e.printStackTrace();
+        }
+
+        customer customer=customerDao.findById(id);
+        customer.setImageurl("/pub/image/"+file.getOriginalFilename());
+        customerDao.save(customer);
+
+        return response;
+    }
+
 }

@@ -31,16 +31,22 @@
                                     <td>Last Name</td>
                                     <td>Phone</td>
                                     <td>City</td>
+                                    <td>Image</td>
                                     <td>Edit</td>
+                                    <td>Details</td>
+                                    <td>File Upload</td>
                                 </tr>
                                 <c:forEach items="${customerVar}" var="customer">
                                     <tr>
                                         <td>${customer.id}</td>
-                                        <td>${customer.firstName}</td>
-                                        <td>${customer.lastName}</td>
-                                        <td>${customer.phone}</td>
-                                        <td>${customer.city}</td>
-                                        <td><a href="/customer/edit/${customer.id}">Edit</a></td>
+                                                                       <td>${customer.firstName}</td>
+                                                                       <td>${customer.lastName}</td>
+                                                                       <td>${customer.phone}</td>
+                                                                       <td>${customer.city}</td>
+                                                                       <td><img src="${customer.imageurl}" style="max-width:100px"></td>
+                                                                       <td><a href="/customer/edit/${customer.id}">Edit</a></td>
+                                                                       <td><a href="/customer/detail?id=${customer.id}">Detail</a></td>
+                                                                       <td><a href="/customer/fileupload?id=${customer.id}">Upload</a></td>
                                     </tr>
                                 </c:forEach>
                             </table>
